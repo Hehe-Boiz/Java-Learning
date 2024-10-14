@@ -18,7 +18,7 @@ public class LibraryCLI {
         System.out.println("Chào mừng đến với Hệ thống Quản lý Thư viện!");
         while (true) {
             System.out.println("\nNhập lệnh (add, remove, borrow, return, reserve, print, exit):");
-            command = scanner.nextLine();
+            command = scanner.nextLine().trim();
 
             switch (command) {
                 case "add":
@@ -51,19 +51,38 @@ public class LibraryCLI {
     private void addItem() {
         // Thêm mã để thêm tài liệu vào thư viện
         System.out.println("Nhập loại tài liệu (book, magazine, cd, dvd):");
-        String type = scanner.nextLine();
+        String type = scanner.nextLine().trim();
         System.out.println("Nhập tiêu đề:");
-        String title = scanner.nextLine();
+        String title = scanner.nextLine().trim();
         System.out.println("Nhập tác giả:");
-        String author = scanner.nextLine();
-        System.out.println("Nhập năm xuất bản:");
-        int year = Integer.parseInt(scanner.nextLine());
+        String author = scanner.nextLine().trim();
+        
+        int year = 0;
+        while (true) {
+            System.out.println("Nhập năm xuất bản:");
+            try {
+                year = Integer.parseInt(scanner.nextLine().trim());
+                break; // Thoát khỏi vòng lặp nếu chuyển đổi thành công
+            } catch (NumberFormatException e) {
+                System.out.println("Năm xuất bản không hợp lệ, vui lòng nhập lại:");
+            }
+        }
+
         System.out.println("Nhập thông tin cụ thể (số trang, số phát hành, thời gian phát, đạo diễn):");
         String specificInfo = scanner.nextLine();
+        try {
 
-        MediaItem<?> mediaItem = MediaItemFactory.createMediaItem(type, title, author, year, specificInfo);
-        libraryManager.getLibrary().addItem(mediaItem);
-        System.out.println("Tài liệu đã được thêm vào thư viện.");
+            if (type.isEmpty() || title.isEmpty() || author.isEmpty() || specificInfo.isEmpty()) {
+                System.out.println("Các trường không được để trống.");
+                return;
+            }
+
+            MediaItem<?> mediaItem = MediaItemFactory.createMediaItem(type, title, author, year, specificInfo);
+            libraryManager.getLibrary().addItem(mediaItem);
+            System.out.println("Tài liệu đã được thêm vào thư viện.");
+        } catch(IllegalArgumentException e){
+            System.out.println(e);
+        }
     }
 
     private void removeItem() {

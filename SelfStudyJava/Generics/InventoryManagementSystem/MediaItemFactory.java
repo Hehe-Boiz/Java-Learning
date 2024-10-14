@@ -14,7 +14,7 @@ public class MediaItemFactory {
             case "dvd":
                 return new DVD(title, author, year, specificInfo); // specificInfo là đạo diễn
             default:
-                throw new IllegalArgumentException("Loại tài liệu không hợp lệ: " + type);
+                throw new IllegalArgumentException("Tài liệu không hợp lệ");
         }
     }
 }
