@@ -2,6 +2,7 @@ package InventoryManagementSystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class LibraryManager {
     private Library<MediaItem<?>> library = new Library<>();
@@ -25,5 +26,14 @@ public class LibraryManager {
 
     public Library<MediaItem<?>> getLibrary() {
         return library;
+    }
+
+    public User getUserByName(String userName,int ID ){
+        for(User user : users){
+            if(user.getName().equals(userName) && user.getId() == ID){
+                return user;
+            }
+        }
+        throw new NoSuchElementException("Không tìm thấy đối tượng: Name= " +userName + " Id= " + ID );
     }
 }

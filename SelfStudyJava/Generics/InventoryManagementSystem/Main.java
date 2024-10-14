@@ -8,11 +8,11 @@ public class Main {
         // Tạo quản lý thư viện
         LibraryManager libraryManager = new LibraryManager();
 
-        // Tạo một số tài liệu
-        Book book1 = new Book("Java Programming", "John Doe", 2020, 300);
-        Magazine magazine1 = new Magazine("Tech Today", "Jane Smith", 2021, 5);
-        CD cd1 = new CD("Greatest Hits", "Artist A", 2019, "3:30");
-        DVD dvd1 = new DVD("Inception", "Christopher Nolan", 2010, "2:28");
+        // Sử dụng MediaItemFactory để tạo các tài liệu
+        MediaItem<?> book1 = MediaItemFactory.createMediaItem("book", "Java Programming", "John Doe", 2020, "300");
+        MediaItem<?> magazine1 = MediaItemFactory.createMediaItem("magazine", "Tech Today", "Jane Smith", 2021, "5");
+        MediaItem<?> cd1 = MediaItemFactory.createMediaItem("cd", "Greatest Hits", "Artist A", 2019, "3:30");
+        MediaItem<?> dvd1 = MediaItemFactory.createMediaItem("dvd", "Inception", "Christopher Nolan", 2010, "2:28");
 
         // Thêm tài liệu vào thư viện
         libraryManager.getLibrary().addItem(book1);
@@ -29,7 +29,7 @@ public class Main {
         libraryManager.addUser(user2);
 
         // Mượn tài liệu
-        user1.borrowItem(book1);
+        user1.borrowItem((Book) book1); // Ép kiểu cho book1
         libraryManager.getLibrary().removeItem(book1);
 
         // In danh mục
@@ -37,13 +37,18 @@ public class Main {
         libraryManager.getLibrary().printCatalog(item -> "Tiêu đề: " + item.getTitle() + ", Tác giả: " + item.getAuthor() + ", Năm: " + item.getYear());
 
         // Đặt trước tài liệu
-        libraryManager.getLibrary().reserveItem(magazine1, user2);
+        boolean reserved = libraryManager.getLibrary().reserveItem(magazine1, user2);
+        if (reserved) {
+            System.out.println("Tài liệu đã được đặt trước.");
+        } else {
+            System.out.println("Không thể đặt trước tài liệu này. Có thể tài liệu đang được mượn.");
+        }
         
         // Cố gắng đặt trước một tài liệu đã được mượn
         libraryManager.getLibrary().reserveItem(book1, user2); // Nên thông báo rằng tài liệu đang được mượn
 
         // Trả tài liệu
-        user1.returnItem(book1);
+        user1.returnItem((Book) book1); // Ép kiểu cho book1
         libraryManager.getLibrary().addItem(book1); // Thêm lại vào thư viện
         System.out.println("Danh mục sau khi trả:");
         libraryManager.getLibrary().printCatalog(item -> "Tiêu đề: " + item.getTitle() + ", Tác giả: " + item.getAuthor() + ", Năm: " + item.getYear());

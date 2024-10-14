@@ -72,13 +72,13 @@ public class Library <T extends MediaItem<?>> {
         String format(T item);
     }
 
-    public void reserveItem(MediaItem<?> item, User user) {
+    public boolean reserveItem(MediaItem<?> item, User user) {
         // Kiểm tra xem tài liệu đã được mượn chưa
         if (!items.contains(item)) {
             reservations.add(new Reservation(item, user, new Date()));
-            System.out.println("Tài liệu đã được đặt trước thành công!");
+            return true;
         } else {
-            System.out.println("Tài liệu hiện đang được mượn và không thể đặt trước.");
+            return false;
         }
     }
 

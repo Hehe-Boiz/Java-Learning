@@ -1,5 +1,7 @@
 package InventoryManagementSystem;
-//GIAO DIỆN KHI MUỐN NHẬP 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+//GIAO DIỆN KHI MUỐN NHẬP THỰC TẾ 
 import java.util.Scanner;
 
 public class LibraryCLI {
@@ -56,31 +58,11 @@ public class LibraryCLI {
         String author = scanner.nextLine();
         System.out.println("Nhập năm xuất bản:");
         int year = Integer.parseInt(scanner.nextLine());
+        System.out.println("Nhập thông tin cụ thể (số trang, số phát hành, thời gian phát, đạo diễn):");
+        String specificInfo = scanner.nextLine();
 
-        switch (type) {
-            case "book":
-                System.out.println("Nhập số trang:");
-                int pages = Integer.parseInt(scanner.nextLine());
-                libraryManager.getLibrary().addItem(new Book(title, author, year, pages));
-                break;
-            case "magazine":
-                System.out.println("Nhập số phát hành:");
-                int issue = Integer.parseInt(scanner.nextLine());
-                libraryManager.getLibrary().addItem(new Magazine(title, author, year, issue));
-                break;
-            case "cd":
-                System.out.println("Nhập thời gian phát:");
-                String duration = scanner.nextLine();
-                libraryManager.getLibrary().addItem(new CD(title, author, year, duration));
-                break;
-            case "dvd":
-                System.out.println("Nhập đạo diễn:");
-                String director = scanner.nextLine();
-                libraryManager.getLibrary().addItem(new DVD(title, author, year, director));
-                break;
-            default:
-                System.out.println("Loại tài liệu không hợp lệ.");
-        }
+        MediaItem<?> mediaItem = MediaItemFactory.createMediaItem(type, title, author, year, specificInfo);
+        libraryManager.getLibrary().addItem(mediaItem);
         System.out.println("Tài liệu đã được thêm vào thư viện.");
     }
 
@@ -88,28 +70,110 @@ public class LibraryCLI {
         // Thêm mã để xóa tài liệu khỏi thư viện
         System.out.println("Nhập tiêu đề tài liệu cần xóa:");
         String title = scanner.nextLine();
-        // Tìm tài liệu và xóa
-        // Giả sử ta có phương thức xóa theo tiêu đề (cần thêm vào lớp Library)
+        ArrayList<MediaItem<?>> foundItems = libraryManager.getLibrary().searchByTitle(title);
+        if(foundItems.isEmpty()){
+            System.out.println("Không tìm thấy tài liệu với tiêu đề: " + title);
+            return;
+        }
+        for(MediaItem<?> item : foundItems){
+            libraryManager.getLibrary().removeItem(item);
+            System.out.println("Tài liệu '" + title + "' đã được xóa.");
+        }
     }
 
     private void borrowItem() {
         // Thêm mã để mượn tài liệu
         System.out.println("Nhập tiêu đề tài liệu cần mượn:");
         String title = scanner.nextLine();
-        // Tìm tài liệu và thực hiện mượn
+        System.out.println("Người mượn: ");
+        String userName = scanner.nextLine();
+        System.out.println("ID người mượn: ");
+        int ID = scanner.nextInt();
+        scanner.nextLine();
+
+        try{
+            User user = libraryManager.getUserByName(userName, ID);
+            ArrayList<MediaItem<?>> foundItems = libraryManager.getLibrary().searchByTitle(title);
+
+            if(foundItems.isEmpty()){
+                System.out.println("Không tìm thấy tài liệu với tiêu đề: " + title);
+                return;
+            }
+
+            for(MediaItem<?> item : foundItems){
+                libraryManager.borrowItem(user, item);;
+                libraryManager.getLibrary().removeItem(item);
+            }
+            System.out.println("Tài liệu đã được trả thành công!");
+        } catch(NoSuchElementException e){
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
+        }
     }
 
     private void returnItem() {
         // Thêm mã để trả tài liệu
         System.out.println("Nhập tiêu đề tài liệu cần trả:");
         String title = scanner.nextLine();
-        // Tìm tài liệu và thực hiện trả
+        System.out.println("Người trả: ");
+        String userName = scanner.nextLine();
+        System.out.println("ID người trả: ");
+        int ID = scanner.nextInt();
+        scanner.nextLine(); // Dọn dẹp bộ đệm
+
+        try{
+            User user = libraryManager.getUserByName(userName, ID);
+            ArrayList<MediaItem<?>> foundItems = libraryManager.getLibrary().searchByTitle(title);
+
+            if(foundItems.isEmpty()){
+                System.out.println("Không tìm thấy tài liệu với tiêu đề: " + title);
+                return;
+            }
+
+            for(MediaItem<?> item : foundItems){
+                libraryManager.returnItem(user, item);;
+                libraryManager.getLibrary().addItem(item);
+            }
+            System.out.println("Tài liệu đã được trả thành công!");
+        } catch(NoSuchElementException e){
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
+        }
     }
 
     private void reserveItem() {
         // Thêm mã để đặt trước tài liệu
         System.out.println("Nhập tiêu đề tài liệu cần đặt trước:");
         String title = scanner.nextLine();
+        System.out.println("Người đặt trước: ");
+        String userName = scanner.nextLine();
+        System.out.println("ID người đặt trước: ");
+        int ID = scanner.nextInt();
+        scanner.nextLine(); 
+        try{
+            User user = libraryManager.getUserByName(userName, ID);
+            ArrayList<MediaItem<?>> foundItems = libraryManager.getLibrary().searchByTitle(title);
+
+            if(foundItems.isEmpty()){
+                System.out.println("Không tìm thấy tài liệu với tiêu đề: " + title);
+                return;
+            }
+
+            for(MediaItem<?> item : foundItems){
+                boolean reserved = libraryManager.getLibrary().reserveItem(item, user);
+                if (reserved) {
+                    System.out.println("Tài liệu đã được đặt trước.");
+                } else {
+                    System.out.println("Không thể đặt trước tài liệu này. Có thể tài liệu đang được mượn.");
+                }
+            }
+        } catch(NoSuchElementException e){
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
+        }
         // Tìm tài liệu và thực hiện đặt trước
     }
 
