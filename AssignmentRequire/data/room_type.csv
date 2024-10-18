@@ -1,0 +1,20 @@
+1,Single Room,1,Standard,1,1,20,50
+2,Double Room,2,Standard,2,2,30,80
+3,Family Suite,3,Suite,3,4,50,120
+4,Presidential Suite,4,Suite,4,6,70,200
+5,Ocean View Suite,5,Suite,2,2,40,150
+6,Deluxe Room,3,Deluxe,2,2,35,100
+7,Luxury Suite,4,Suite,3,4,55,180
+8,Executive Suite,5,Suite,2,2,45,160
+9,King Room,2,Standard,1,2,25,70
+10,Queen Room,3,Standard,1,2,30,80
+11,Twin Room,4,Standard,2,2,35,90
+12,Junior Suite,3,Suite,2,3,40,140
+13,Penthouse Suite,5,Suite,3,5,65,220
+14,Garden View Room,1,Standard,1,2,20,60
+15,Poolside Suite,2,Suite,2,3,45,170
+16,Honeymoon Suite,4,Suite,1,2,50,200
+17,Lake View Room,3,Standard,1,2,30,80
+18,Mountain View Suite,5,Suite,2,3,55,190
+19,Beachfront Deluxe,1,Deluxe,3,4,60,250
+20,Lakeside Deluxe,2,Deluxe,2,3,50,220
