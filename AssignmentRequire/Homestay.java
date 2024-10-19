@@ -15,7 +15,7 @@ public class Homestay extends CommonAccommodation{
 
     @Override
     public String toString() {
-        return "Homestay ["+ID_Accommodation+", "+name_Accommodation+", "
+        return "Homestay ["+iD_Accommodation+", "+name_Accommodation+", "
                         +address_Accommodation+", "+getRating_Accommodation()+", "+city_Accommodation+"]";
     }
 }

@@ -15,7 +15,7 @@ public class Villa extends LuxuryAccommodation{
 
     @Override
     public String toString() {
-        return "Villa ["+ID_Accommodation+", "+name_Accommodation+", "+address_Accommodation
+        return "Villa ["+iD_Accommodation+", "+name_Accommodation+", "+address_Accommodation
         +", "+city_Accommodation+", "+isIs_pool_available_LuxuryAccommodation()+", "+isIs_welcome_drink_LuxuryAccommodation()
         +", "+isIs_free_breakfast_LuxuryAccommodation()+", "+isIs_gym_available_LuxuryAccommodation()
         +", "+getMaximum_people_can_serve_LuxuryAccommodation()+", "+getPrice_night_LuxuryAccommodation()+"]";

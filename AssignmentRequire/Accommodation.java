@@ -1,21 +1,21 @@
 package AssignmentRequire;
 
 abstract class Accommodation {
-    protected int ID_Accommodation;
+    protected int iD_Accommodation;
     protected String name_Accommodation;
     protected String address_Accommodation;
     protected String city_Accommodation;
     
     public Accommodation(int iD_Accommodation, String name_Accommodation, String address_Accommodation,
             String city_Accommodation) {
-        ID_Accommodation = iD_Accommodation;
+        this.iD_Accommodation = iD_Accommodation;
         this.name_Accommodation = name_Accommodation;
         this.address_Accommodation = address_Accommodation;
         this.city_Accommodation = city_Accommodation;
     }
 
     public void setID_Accommodation(int iD_Accommodation) {
-        ID_Accommodation = iD_Accommodation;
+        this.iD_Accommodation = iD_Accommodation;
     }
 
     public void setName_Accommodation(String name_Accommodation) {

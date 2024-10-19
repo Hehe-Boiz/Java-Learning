@@ -25,7 +25,7 @@ public class CruiseShip extends LuxuryAccommodation{
 
     @Override
     public String toString() {
-        return "CruiseShip [" + ID_Accommodation + ", "
+        return "CruiseShip [" + iD_Accommodation + ", "
                 + name_Accommodation + ", "
                 + address_Accommodation + ", " + city_Accommodation+ ", "+ is_serve_bar_CruiseShip
                 + ", " + isIs_pool_available_LuxuryAccommodation()

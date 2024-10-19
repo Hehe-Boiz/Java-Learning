@@ -28,7 +28,7 @@ public class Hotel extends CommonAccommodation{
 
     @Override
     public String toString() {
-        return "Hotel [" + ID_Accommodation + ", " + rating_hotel
+        return "Hotel [" + iD_Accommodation + ", " + rating_hotel
                 + ", " + name_Accommodation + ", " + address_Accommodation
                 + ", " + city_Accommodation + "]";
     }
