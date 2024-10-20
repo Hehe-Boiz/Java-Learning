@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 
 public class ReservationSystem {
     private ArrayList<Accommodation> accommodations;
@@ -116,6 +119,8 @@ public class ReservationSystem {
                 }
 
             }
+
+            // đưa danh sách phòng vào từng thằng 
             for(Integer key : room_acc.keySet()){
                 ArrayList<Room> temp = new ArrayList<>();
                 for (Accommodation a : accommodation){
@@ -185,5 +190,68 @@ public class ReservationSystem {
         outputList.addAll(common);
 
         return outputList;
+    }
+
+    public ArrayList<Accommodation> searchForRoomByRange(String reservationPath, double priceFrom, 
+    double priceTo, Date checkin, Date checkout, String city, int numOfPeople){
+        ArrayList<Accommodation> outpuList = new ArrayList<>();
+        ArrayList<Reservation> reser = new ArrayList<>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(reservationPath));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] elements = line.split(",");
+
+                int choie = elements.length;
+
+                switch (choie) {
+                    case 4:
+                        long checkInLong = Long.parseLong(elements[2]);
+                        long checkOutLong = Long.parseLong(elements[3]);
+
+                        Date checkInDate = new Date(checkInLong);
+                        Date checkOutDate = new Date(checkOutLong);
+                        reser.add(new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), -1, checkInDate, checkOutDate));
+                        break;
+                    case 5:
+                        checkInLong = Long.parseLong(elements[2]);
+                        checkOutLong = Long.parseLong(elements[3]);
+
+                        checkInDate = new Date(checkInLong);
+                        checkOutDate = new Date(checkOutLong);
+
+                        reser.add(new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]), checkInDate, checkOutDate));
+                        break;
+                    default:
+                        System.out.println("Error, invalid number of argument req3");
+                        break;
+                }
+            }
+
+            br.close();
+        } catch (IOException e) {
+            System.out.println("Error reader req3");
+        }
+        return outpuList;
+    }
+
+    public long diffBetweenDays(long dateStart, long dateEnd) {
+        Date date = new Date(dateStart * 1000);
+        Date date1 = new Date(dateEnd * 1000);
+
+        date = removeTime(date);
+        date1 = removeTime(date1);
+
+        long diff = Math.abs(date1.getTime() - date.getTime());
+        long numOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return numOfDays;
+    }
+
+    private Date removeTime(Date date) {
+        long time = date.getTime();
+        long timeWithoutTime = time - (time % (24 * 60 * 60 * 1000));
+        return new Date(timeWithoutTime);
     }
 }
