@@ -22,15 +22,18 @@ public class Main {
         String accPath = "AssignmentRequire/data/accommodation.csv";
         String roomInAccPath = "AssignmentRequire/data/room_in_accommodation.csv";
 
-        File f = new File("./output");
+        File f = new File("AssignmentRequire/output");
         if (!f.exists()) {
             f.mkdirs();
         }
 
-        ReservationSystem reservationSystem = new ReservationSystem(accPath, roomPath, roomInAccPath);
-
-        ArrayList<Accommodation> req1 = reservationSystem.getAccommodations();
+        ReservationSystem ReservationSystem = new ReservationSystem(accPath, roomPath, roomInAccPath);
+        ArrayList<Accommodation> req1 = ReservationSystem.getAccommodations();
         writeFile(REQUIREMENT_OUTPUT_FILES[0], req1);
+        List<Accommodation> req2_1 = ReservationSystem.searchForRoom("City H", 1);
+        List<Accommodation> req2_2 = ReservationSystem.searchForRoom("City B", 1);
+        writeFile(REQUIREMENT_OUTPUT_FILES[1], req2_1);
+        writeFile(REQUIREMENT_OUTPUT_FILES[2], req2_2);
     }
 
     public static <E> boolean writeFile(String path, List<E> rows) {
