@@ -41,9 +41,9 @@ public class Resort extends CommonAccommodation{
 
     @Override
     public String toString() {
-        return "Resort [ID_Accommodation=" + iD_Accommodation + ", name_Accommodation=" + name_Accommodation
-                + ", rating_stars_Resort=" + rating_stars_Resort + ", address_Accommodation=" + address_Accommodation
-                + ", is_pool_available_Resort=" + is_pool_available_Resort + ", city_Accommodation="
+        return "Resort [" + iD_Accommodation + ", " + name_Accommodation
+                + ", " + rating_stars_Resort + ", " + address_Accommodation
+                + ", " + is_pool_available_Resort + ", "
                 + city_Accommodation + "]";
     }
 }

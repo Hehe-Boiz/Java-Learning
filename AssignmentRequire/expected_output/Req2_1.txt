@@ -1,0 +1,2 @@
+Villa [9, Lakeside Villa, 123 Lakeview Dr, City H, true, true, false, false, 25, 400]
+Resort [8, Sunset Resort, 3, 654 Beach Rd, true, City H]
