@@ -1,0 +1,11 @@
+#req1
+
+#req2
+    - Số lượng người ở đây là người từng phòng hay là người tổng tất cả các phòng.
+
+#req3
+
+#req4
+    - Số lượng người ở đây là người từng phòng hay là người tổng tất cả các phòng.
+    
+#req5

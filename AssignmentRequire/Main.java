@@ -34,6 +34,13 @@ public class Main {
         List<Accommodation> req2_2 = ReservationSystem.searchForRoom("City B", 1);
         writeFile(REQUIREMENT_OUTPUT_FILES[1], req2_1);
         writeFile(REQUIREMENT_OUTPUT_FILES[2], req2_2);
+
+        List<Accommodation> req4_1 = ReservationSystem.searchInAdvance("City A", 2, "Standard", null,
+                            null, null, null);
+        List<Accommodation> req4_2 = ReservationSystem.searchInAdvance("City D", 20, "Standard", true,
+                            5, true, null);
+        writeFile(REQUIREMENT_OUTPUT_FILES[5], req4_1);
+        writeFile(REQUIREMENT_OUTPUT_FILES[6], req4_2);
     }
 
     public static <E> boolean writeFile(String path, List<E> rows) {
