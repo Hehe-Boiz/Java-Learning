@@ -42,11 +42,11 @@ public class Main {
                 5, true, null);
         writeFile(REQUIREMENT_OUTPUT_FILES[5], req4_1);
         writeFile(REQUIREMENT_OUTPUT_FILES[6], req4_2);
-        List<Accommodation> req3_1 = ReservationSystem.searchForRoomByRange("AssignmentRequire/data/reservation_3.csv",
+        List<Accommodation> req3_1 = ReservationSystem.searchForRoomByRangeOptimize("AssignmentRequire/data/reservation_3.csv",
                 10,
                 3000,
                 new Date(1713512750), new Date(1713771950), "City H", 1);
-        List<Accommodation> req3_2 = ReservationSystem.searchForRoomByRange("AssignmentRequire/data/reservation_3.csv",
+        List<Accommodation> req3_2 = ReservationSystem.searchForRoomByRangeOptimize("AssignmentRequire/data/reservation_3.csv",
                 10,
                 3000,
                 new Date(1713512750), new Date(1713771950), "City B", 1);

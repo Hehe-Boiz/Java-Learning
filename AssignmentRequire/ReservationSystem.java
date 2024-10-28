@@ -317,6 +317,123 @@ public class ReservationSystem {
         return outpuList;
     }
 
+    // req3 Optimize
+    public ArrayList<Accommodation> searchForRoomByRangeOptimize(String reservationPath, double priceFrom,
+            double priceTo, Date checkin, Date checkout, String city, int numOfPeople) {
+        ArrayList<Accommodation> outputList = new ArrayList<>();
+        HashMap<Integer, Accommodation> accs = new HashMap<>();
+        HashMap<Integer, ArrayList<Reservation>> reservations = new HashMap<>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(reservationPath));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] elements = line.split(",");
+
+                int choie = elements.length;
+
+                switch (choie) {
+                    case 4:
+                        long checkInLong = Long.parseLong(elements[2]);
+                        long checkOutLong = Long.parseLong(elements[3]);
+
+                        Date checkInDate = new Date(checkInLong);
+                        Date checkOutDate = new Date(checkOutLong);
+                        if (!reservations.containsKey(Integer.parseInt(elements[1]))) {
+                            reservations.put(Integer.parseInt(elements[1]), new ArrayList<>());
+                        }
+                        reservations.get(Integer.parseInt(elements[1]))
+                                .add(new Reservation(Integer.parseInt(elements[0]),
+                                        Integer.parseInt(elements[1]), -1, checkInDate, checkOutDate));
+                        break;
+                    case 5:
+                        checkInLong = Long.parseLong(elements[3]);
+                        checkOutLong = Long.parseLong(elements[4]);
+
+                        checkInDate = new Date(checkInLong);
+                        checkOutDate = new Date(checkOutLong);
+
+                        if (!reservations.containsKey(Integer.parseInt(elements[1]))) {
+                            reservations.put(Integer.parseInt(elements[1]), new ArrayList<>());
+                        }
+                        reservations.get(Integer.parseInt(elements[1]))
+                                .add(new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]),
+                                        Integer.parseInt(elements[2]), checkInDate, checkOutDate));
+                        break;
+                    default:
+                        System.out.println("Error: Invalid number of arguments in line: " + line);
+                        break;
+                }
+            }
+
+            br.close();
+        } catch (IOException e) {
+            System.out.println("Error reader req3");
+        }
+
+        for (Accommodation a : accommodations) {
+            if (a.city_Accommodation.equals(city)) {
+                accs.put(a.iD_Accommodation, a);
+            }
+        }
+
+        // lấy mảng các dịch vụ đã đặt
+        for (Integer key : accs.keySet()) {
+            Accommodation a = accs.get(key);
+            ArrayList<Reservation> accReservations = reservations.getOrDefault(key, new ArrayList<>());
+
+            if (a instanceof LuxuryAccommodation) {
+                LuxuryAccommodation b = (LuxuryAccommodation) a;
+
+                if (isWithinCriteria(b.getPrice_night_LuxuryAccommodation(), priceFrom, priceTo, numOfPeople,
+                        b.getMaximum_people_can_serve_LuxuryAccommodation())
+                        && !isReserved(checkin, checkout, accReservations, -1)) {
+                    outputList.add(b);
+                }
+            }
+
+            // xử lý CommonAccommodation
+            else {
+                CommonAccommodation b = (CommonAccommodation) a;
+                // duyệt qua các Room
+                for (Room room : b.getRoom_List()) {
+                    if (isWithinCriteria(room.getPrice_night_Room(), priceFrom, priceTo, numOfPeople,
+                            room.getMaximum_people_Room())
+                            && !isReserved(checkin, checkout, accReservations, room.getID_Room())) {
+                        outputList.add(b);
+                        break;
+                    }
+                }
+            }
+        }
+
+        Collections.sort(outputList, new Comparator<Accommodation>() {
+            @Override
+            public int compare(Accommodation a1, Accommodation a2) {
+                return a2.name_Accommodation.compareTo(a1.name_Accommodation);
+            }
+        });
+        return outputList;
+    }
+
+    // kiểm tra giá và số lượng người
+    private boolean isWithinCriteria(double price, double priceFrom, double priceTo, int numOfPeople, int maxPeople) {
+        return price >= priceFrom && price <= priceTo && maxPeople >= numOfPeople && maxPeople <= numOfPeople + 2;
+    }
+
+    // kiểm tra có ngày trống không
+    private boolean isReserved(Date checkin, Date checkout, ArrayList<Reservation> reservations, int roomId) {
+        for (Reservation r : reservations) {
+            if ((roomId == -1 || r.getRoomId() == roomId)
+                    && r.getCheckin().compareTo(checkout) <= 0
+                    && r.getCheckout().compareTo(checkin) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // req4
     public ArrayList<Accommodation> searchInAdvance(String city, Integer numOfPeople, String roomType,
             Boolean privatePool, Integer starQuality, Boolean freeBreakfast, Boolean privateBar) {
@@ -506,8 +623,8 @@ public class ReservationSystem {
         for (Reservation r : reservations.getOrDefault(acc.iD_Accommodation, new ArrayList<>())) {
             if (r.getAccId() == acc.iD_Accommodation) {
                 if ((acc instanceof LuxuryAccommodation && r.getRoomId() == -1) ||
-                    (acc instanceof CommonAccommodation && r.getRoomId() == room.getID_Room())) {
-                    
+                        (acc instanceof CommonAccommodation && r.getRoomId() == room.getID_Room())) {
+
                     Date start = r.getCheckin();
                     Date end = r.getCheckout();
                     if (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0) {
@@ -525,8 +642,8 @@ public class ReservationSystem {
         // Lưu đặt phòng mới
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(reservationPath, true))) {
             writer.newLine();
-            String str = String.format("%d,%d,%d,%d,%d", 
-                size, acc.iD_Accommodation, room.getID_Room(), startCheckIn, endCheckOut);
+            String str = String.format("%d,%d,%d,%d,%d",
+                    size, acc.iD_Accommodation, room.getID_Room(), startCheckIn, endCheckOut);
             writer.write(str);
         } catch (IOException e) {
             System.out.println("Error writing reservation");
