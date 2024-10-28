@@ -502,72 +502,34 @@ public class ReservationSystem {
             accs.put(a.iD_Accommodation, a);
         }
 
-        double totalMoney = 0.0;
-        double payMoney = 0.0;
-
         // ánh xạ tới mảng các dịch vụ đã đặt trước
         for (Reservation r : reservations.getOrDefault(acc.iD_Accommodation, new ArrayList<>())) {
-            if (r.getAccId() == acc.iD_Accommodation && r.getRoomId() == -1 && acc instanceof LuxuryAccommodation) {
-                // isReserved = true;
-                Date start = r.getCheckin();
-                Date end = r.getCheckout();
-                if (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0) {
-                    throw new Exception("The room has already been booked during this time period.");
-                }
-
-                else {
-                    long startCheckIn = checkin.getTime();
-                    long endCheckOut = checkout.getTime();
-                    totalMoney = room.getPrice_night_Room() * diffBetweenDays(startCheckIn, endCheckOut);
-                    payMoney = totalMoney + 0.08 * totalMoney;
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(reservationPath, true));
-                    writer.newLine();
-                    if (!reservations.containsKey(acc.iD_Accommodation)) {
-                        reservations.put(acc.iD_Accommodation, new ArrayList<>());
-                    }
-                    reservations.get(acc.iD_Accommodation)
-                            .add(new Reservation(size++, acc.iD_Accommodation, room.getID_Room(), checkin, checkout));
-                    String str = String.format("%s,%s,%s,%s,%s", size, acc.iD_Accommodation, room.getID_Room(),
-                            startCheckIn, endCheckOut);
-                    writer.write(str);
-                    writer.close();
-                    break;
-                }
-            } else {
-                if (accs.get(r.getAccId()) instanceof CommonAccommodation) {
-                    CommonAccommodation la = (CommonAccommodation) accs.get(r.getAccId());
-                    for (Room reRoom : la.getRoom_List()) {
-                        if (r.getAccId() == acc.iD_Accommodation && (r.getRoomId() == reRoom.getID_Room())) {
-                            // isReserved = true;
-                            Date start = r.getCheckin();
-                            Date end = r.getCheckout();
-                            if (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0) {
-                                throw new Exception("The room has already been booked during this time period.");
-                            }
-
-                            else {
-                                long startCheckIn = checkin.getTime();
-                                long endCheckOut = checkout.getTime();
-                                totalMoney = room.getPrice_night_Room() * diffBetweenDays(startCheckIn, endCheckOut);
-                                payMoney = totalMoney + 0.08 * totalMoney;
-                                System.out.println("Tong tien" + payMoney);
-                                BufferedWriter writer = new BufferedWriter(new FileWriter(reservationPath, true));
-                                writer.newLine();
-                                if (!reservations.containsKey(acc.iD_Accommodation)) {
-                                    reservations.put(acc.iD_Accommodation, new ArrayList<>());
-                                }
-                                reservations.get(acc.iD_Accommodation).add(new Reservation(size++, acc.iD_Accommodation,
-                                        room.getID_Room(), checkin, checkout));
-                                String str = String.format("%s,%s,%s,%s,%s", size, acc.iD_Accommodation,
-                                        room.getID_Room(), startCheckIn, endCheckOut);
-                                writer.write(str);
-                                writer.close();
-                                break;
-                            }
-                        }
+            if (r.getAccId() == acc.iD_Accommodation) {
+                if ((acc instanceof LuxuryAccommodation && r.getRoomId() == -1) ||
+                    (acc instanceof CommonAccommodation && r.getRoomId() == room.getID_Room())) {
+                    
+                    Date start = r.getCheckin();
+                    Date end = r.getCheckout();
+                    if (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0) {
+                        throw new Exception("The room has already been booked during this time period.");
                     }
                 }
             }
+        }
+
+        long startCheckIn = checkin.getTime();
+        long endCheckOut = checkout.getTime();
+        double totalMoney = room.getPrice_night_Room() * diffBetweenDays(startCheckIn, endCheckOut);
+        double payMoney = totalMoney + 0.08 * totalMoney;
+
+        // Lưu đặt phòng mới
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(reservationPath, true))) {
+            writer.newLine();
+            String str = String.format("%d,%d,%d,%d,%d", 
+                size, acc.iD_Accommodation, room.getID_Room(), startCheckIn, endCheckOut);
+            writer.write(str);
+        } catch (IOException e) {
+            System.out.println("Error writing reservation");
         }
         return payMoney;
     }
