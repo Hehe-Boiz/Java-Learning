@@ -196,10 +196,12 @@ public class ReservationSystem {
         return outputList;
     }
 
+    //req 3
     public ArrayList<Accommodation> searchForRoomByRange(String reservationPath, double priceFrom,
             double priceTo, Date checkin, Date checkout, String city, int numOfPeople) {
         ArrayList<Accommodation> outpuList = new ArrayList<>();
         ArrayList<Reservation> reser = new ArrayList<>();
+        // HashMap<Integer, Reservation> reservations = new HashMap<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(reservationPath));
@@ -219,6 +221,8 @@ public class ReservationSystem {
                         Date checkOutDate = new Date(checkOutLong);
                         reser.add(new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), -1,
                                 checkInDate, checkOutDate));
+                        // reservations.put(Integer.parseInt(elements[1]), new Reservation(Integer.parseInt(elements[0]), 
+                        // Integer.parseInt(elements[1]), -1, checkInDate, checkOutDate));
                         break;
                     case 5:
                         checkInLong = Long.parseLong(elements[2]);
@@ -229,6 +233,8 @@ public class ReservationSystem {
 
                         reser.add(new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]),
                                 Integer.parseInt(elements[2]), checkInDate, checkOutDate));
+                        // reservations.put(Integer.parseInt(elements[0]),new Reservation(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]),
+                        // Integer.parseInt(elements[2]), checkInDate, checkOutDate));
                         break;
                     default:
                         System.out.println("Error, invalid number of argument req3");
@@ -240,9 +246,42 @@ public class ReservationSystem {
         } catch (IOException e) {
             System.out.println("Error reader req3");
         }
+
+        for(Accommodation a : accommodations){
+            if(a.city_Accommodation.equals(city)){
+                if(a instanceof LuxuryAccommodation){
+                    LuxuryAccommodation b = (LuxuryAccommodation) a;
+
+                    if(b.getPrice_night_LuxuryAccommodation() >= priceFrom && b.getPrice_night_LuxuryAccommodation()<=priceTo && b.getMaximum_people_can_serve_LuxuryAccommodation() <= numOfPeople +2 && b.getMaximum_people_can_serve_LuxuryAccommodation() >= numOfPeople){
+                        boolean checkDoesRoom_InResevatedRoom = false;
+                        for(Reservation r : reser){
+                            if(r.getAccId() == a.iD_Accommodation && r.getRoomId() == -1){
+                                checkDoesRoom_InResevatedRoom = true;
+                                Date start = r.getCheckin();
+                                Date end = r.getCheckout();
+                                boolean checkOverlap = (start.before(checkout) && end.after(checkin)) || (start.equals(checkin) && end.equals(checkout));
+                                if(!checkOverlap){
+                                    outpuList.add(b);
+                                }
+                            }
+                        }
+
+                        if(checkDoesRoom_InResevatedRoom == false){
+                            outpuList.add(b);   
+                        }
+                    }
+                }
+            }
+
+            else {
+
+            }
+        }
+
         return outpuList;
     }
 
+    // req4
     public ArrayList<Accommodation> searchInAdvance(String city, Integer numOfPeople, String roomType,
             Boolean privatePool, Integer starQuality, Boolean freeBreakfast, Boolean privateBar) {
         ArrayList<Accommodation> finalFilter = new ArrayList<>();
@@ -254,8 +293,8 @@ public class ReservationSystem {
                     boolean matches = true;
                     LuxuryAccommodation la = (LuxuryAccommodation) a;
 
-                    if (la.getMaximum_people_can_serve_LuxuryAccommodation() != numOfPeople) {
-                        matches = true;
+                    if (la.getMaximum_people_can_serve_LuxuryAccommodation() < numOfPeople) {
+                        matches = false;
                     }
 
                     if (privatePool != null) {
@@ -289,37 +328,52 @@ public class ReservationSystem {
                     }
                 }
 
-                // để phù hợp với thực tế nên số lượng người sẽ là số lượng người của tất cả các phòng
+                // chỉ sửa cho HomeStay để phù hợp thực tế 
                 // xử lí cho CommonAccommodation
                 else {
                     boolean matches = true;
                     CommonAccommodation la = (CommonAccommodation) a;
-                    boolean isValid = false;
-                    int peoRoom = 0;
+                    boolean hasMatchingRoom = false;
+                    int sumPeople = 0;
 
                     for (Room room : la.getRoom_List()){
                         if (roomType != null && room.getType_Room().equals(roomType)) {
-                            isValid = true;
+                            continue;
                         }
-                        peoRoom+=room.getMaximum_people_Room();
+
+                        if (numOfPeople != null) {
+                            if (la instanceof Hotel && numOfPeople > room.getMaximum_people_Room()|| la instanceof Resort && numOfPeople > room.getMaximum_people_Room()) {
+                                matches = false;
+                                break;
+                            }  else if (la instanceof Homestay){
+                                sumPeople+=room.getMaximum_people_Room();
+                            }
+                        }
+
+                        hasMatchingRoom = true; // có ít nhất 1 phòng phù hợp
+    
                     }
 
-                    if(!isValid){
+                    if(numOfPeople != null && a instanceof Homestay && numOfPeople > sumPeople){
+                        matches = false;
+                        System.out.println("Tong phong" + sumPeople);
+                        for(Room room : la.getRoom_List()){
+                            System.out.println(room);
+                        }
+                    }
+
+                    if(!hasMatchingRoom){
                         matches = false;
                     }
 
-                    if(numOfPeople != null && numOfPeople > peoRoom){
-                        matches =  false;
-                    }
-
                     if (starQuality != null) {
-                        if (a instanceof Hotel) {
-                            Hotel h = (Hotel) a;
+                        if (la instanceof Hotel) {
+                            Hotel h = (Hotel) la;
                             if (h.getRating_hotel() != starQuality) {
                                 matches = false;
                             }
-                        } else if (a instanceof Resort) {
-                            Resort r = (Resort) a;
+                        } else if (la instanceof Resort) {
+                            Resort r = (Resort) la;
                             if (r.getRating_stars_Resort() != starQuality) {
                                 matches = false;
                             }
@@ -330,6 +384,7 @@ public class ReservationSystem {
 
                     if (matches) {
                         finalFilter.add(a);
+                        continue;
                     }
                 }
             }
