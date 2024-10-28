@@ -237,7 +237,7 @@ public class ReservationSystem {
                         // Integer.parseInt(elements[2]), checkInDate, checkOutDate));
                         break;
                     default:
-                        System.out.println("Error, invalid number of argument req3");
+                        System.out.println("Error: Invalid number of arguments in line: " + line);
                         break;
                 }
             }
@@ -253,29 +253,52 @@ public class ReservationSystem {
                     LuxuryAccommodation b = (LuxuryAccommodation) a;
 
                     if(b.getPrice_night_LuxuryAccommodation() >= priceFrom && b.getPrice_night_LuxuryAccommodation()<=priceTo && b.getMaximum_people_can_serve_LuxuryAccommodation() <= numOfPeople +2 && b.getMaximum_people_can_serve_LuxuryAccommodation() >= numOfPeople){
-                        boolean checkDoesRoom_InResevatedRoom = false;
+                        boolean isReserved = false;
                         for(Reservation r : reser){
                             if(r.getAccId() == a.iD_Accommodation && r.getRoomId() == -1){
-                                checkDoesRoom_InResevatedRoom = true;
+                                isReserved = true;
                                 Date start = r.getCheckin();
                                 Date end = r.getCheckout();
-                                boolean checkOverlap = (start.before(checkout) && end.after(checkin)) || (start.equals(checkin) && end.equals(checkout));
+                                boolean checkOverlap = (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0);
                                 if(!checkOverlap){
                                     outpuList.add(b);
                                 }
                             }
                         }
 
-                        if(checkDoesRoom_InResevatedRoom == false){
+                        if(!isReserved){
                             outpuList.add(b);   
+                        }
+                    }
+                }
+
+                else{ // ay da
+                    CommonAccommodation b = (CommonAccommodation) a;
+                    for(Room room : b.getRoom_List()){
+                        if(room.getPrice_night_Room() >= priceFrom && room.getPrice_night_Room() <= priceTo){
+                            if((numOfPeople + 2 >= room.getMaximum_people_Room()) && (numOfPeople <= room.getMaximum_people_Room())){
+                                boolean isReserved = false;
+                                for(Reservation r : reser) {
+                                    if(r.getAccId() == b.iD_Accommodation && (r.getRoomId() == room.getID_Room())){
+                                        isReserved = true;
+                                        Date start = r.getCheckin();
+                                        Date end = r.getCheckout();
+                                        boolean checkOverlap = (start.compareTo(checkout) <= 0 && end.compareTo(checkin) >= 0);
+                                        if(!checkOverlap){
+                                            outpuList.add(b);
+                                        }
+                                    }
+                                }
+                                if(!isReserved){
+                                    outpuList.add(b);
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            else {
-
-            }
+            
         }
 
         return outpuList;

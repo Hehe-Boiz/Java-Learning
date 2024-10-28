@@ -1,0 +1,2 @@
+Hotel [2, 5, Luxury Hotel, 456 Elm St, City B]
+Hotel [2, 5, Luxury Hotel, 456 Elm St, City B]
