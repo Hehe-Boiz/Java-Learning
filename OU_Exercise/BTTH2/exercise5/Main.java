@@ -1,11 +1,14 @@
 package exercise5;
 
+
 public class Main {
     public static void main(String[] args) {
         PhanSo[] mangPhanSo = {
-            new PhanSo(1, 2),
+            new PhanSo(-2, -4),
             new PhanSo(3, 4),
-            new PhanSo(5, 6)
+            new PhanSo(5, 6),
+            new PhanSo(-4,-5),
+            new PhanSo(-2,-3)
         };
 
         // Hiển thị các phân số trong mảng
@@ -31,5 +34,19 @@ public class Main {
         }
         System.out.print("Phân số lớn nhất: ");
         max.display();
+
+        for (int i = 1; i < mangPhanSo.length ; i ++){
+            PhanSo x = mangPhanSo[i];
+            int j = i-1;
+            while(j >= 0 && mangPhanSo[j].comparePhanSo(x) < 0){
+                mangPhanSo[j+1] = mangPhanSo[j];
+                j--;
+            }
+            mangPhanSo[j+1] = x;
+        }
+
+        for(PhanSo ps : mangPhanSo){
+            ps.display();
+        }
     }
 }

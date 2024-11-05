@@ -21,9 +21,12 @@ public class HinhChuNhat {
         this.p2 = p2;
     }
 
-    public HinhChuNhat(Diem p1, Diem p2) {
-        this.p1 = p1;
-        this.p2 = p2;
+    public HinhChuNhat(Diem p1, Diem p2) throws Exception {
+        if(p1.getX() <= p2.getX() && p1.getY() >= p2.getY()){
+            this.p1 = p1;
+            this.p2 = p2;
+        }
+        else throw new Exception("Giá trị không hợp lệ.");
     }
 
     public double perimeterRectangle(){
