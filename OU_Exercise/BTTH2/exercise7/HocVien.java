@@ -19,10 +19,10 @@ public class HocVien {
         this.maHV = dem;
     }
 
-    public HocVien(String hoTen, String queQuan, String ngaySinh) throws ParseException {
+    public HocVien(String hoTen, String queQuan, Date ngaySinh) throws ParseException {
         this.hoTen = hoTen;
         this.queQuan = queQuan;
-        this.ngaySinh = new SimpleDateFormat("dd/MM/yyyy").parse(ngaySinh);
+        this.ngaySinh = ngaySinh;
         this.diemToan = null;
         this.diemLy = null;
         this.diemHoa = null;
@@ -51,7 +51,7 @@ public class HocVien {
     }
 
     public double tinhDiemTrungBinh() {
-        if (diemToan != null && diemLy != null && diemHoa != null) {
+        if (diemToan != null || diemLy != null || diemHoa != null) {
             return (diemToan + diemLy + diemHoa) / 3;
         }
         return 0.0;
