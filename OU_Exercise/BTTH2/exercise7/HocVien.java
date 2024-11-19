@@ -2,6 +2,7 @@ package exercise7;
 
 import java.time.LocalDate;
 // import java.util.Date;
+import java.util.stream.DoubleStream;
 
 public class HocVien {
     private static int dem = 0;
@@ -18,7 +19,7 @@ public class HocVien {
         this.maHV = dem;
     }
 
-    public HocVien(String hoTen, String queQuan, LocalDate ngaySinh){
+    public HocVien(String hoTen, String queQuan, LocalDate ngaySinh) {
         this.hoTen = hoTen;
         this.queQuan = queQuan;
         this.ngaySinh = ngaySinh;
@@ -54,14 +55,24 @@ public class HocVien {
     }
 
     public double tinhDiemTrungBinh() {
-        if (diemToan != null || diemLy != null || diemHoa != null) {
+        if (diemToan != null && diemLy != null && diemHoa != null) {
             return (diemToan + diemLy + diemHoa) / 3;
         }
         return 0.0;
     }
 
+    public double tinhDiemTrungBinhOptimize() {
+        if (diemToan != null && diemLy != null && diemHoa != null) {
+            return DoubleStream.of(diemHoa, diemLy, diemToan).average().getAsDouble();
+        }
+        return 0;
+    }
+
     public boolean isScholarship() {
         return tinhDiemTrungBinh() >= 8.0 && diemToan >= 5 && diemLy >= 5 && diemHoa >= 5;
+    }
+    public boolean isNhoHon18(){
+        return this.ngaySinh.plusYears(18).compareTo(LocalDate.now()) > 0;
     }
 
     @Override

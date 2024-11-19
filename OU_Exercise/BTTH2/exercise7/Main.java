@@ -45,7 +45,7 @@ public class Main {
 
         // Tìm kiếm học viên theo tên
         System.out.println("\nTìm kiếm học viên theo từ khóa 'Lan':");
-        quanLiHocVien.timKiemHocVien("Lan");
+        quanLiHocVien.findHocVien("Lan");
 
         // Ghi danh sách học viên đủ học bổng vào file
         quanLiHocVien.xacDinhHocVienTot("OU_Exercise/BTTH2/exercise7/hocvien_hocbong.txt");
