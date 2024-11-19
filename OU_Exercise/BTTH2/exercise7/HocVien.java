@@ -1,15 +1,14 @@
 package exercise7;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+// import java.util.Date;
 
 public class HocVien {
     private static int dem = 0;
     private int maHV;
     private String hoTen;
     private String queQuan;
-    private Date ngaySinh;
+    private LocalDate ngaySinh;
     private Double diemToan;
     private Double diemLy;
     private Double diemHoa;
@@ -19,13 +18,17 @@ public class HocVien {
         this.maHV = dem;
     }
 
-    public HocVien(String hoTen, String queQuan, Date ngaySinh) throws ParseException {
+    public HocVien(String hoTen, String queQuan, LocalDate ngaySinh){
         this.hoTen = hoTen;
         this.queQuan = queQuan;
         this.ngaySinh = ngaySinh;
         this.diemToan = null;
         this.diemLy = null;
         this.diemHoa = null;
+    }
+
+    public HocVien(String hoTen, String queQuan, String ngaySinh) {
+        this(hoTen, queQuan, LocalDate.parse(ngaySinh, Config.FORMATTER));
     }
 
     public int getMaHV() {
@@ -40,7 +43,7 @@ public class HocVien {
         return queQuan;
     }
 
-    public Date getNgaySinh() {
+    public LocalDate getNgaySinh() {
         return ngaySinh;
     }
 
@@ -63,8 +66,7 @@ public class HocVien {
 
     @Override
     public String toString() {
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-        String ngaySinhStr = f.format(ngaySinh);
+        String ngaySinhStr = Config.FORMATTER.format(ngaySinh);
         return "MaHV: " + maHV + " - Ho Ten: " + hoTen + " - Que Quan: " + queQuan + " - Ngay Sinh: " + ngaySinhStr
                 + " - Diem Toan: " + diemToan + " - Diem Ly: " + diemLy + " - Diem Hoa: " + diemHoa;
     }

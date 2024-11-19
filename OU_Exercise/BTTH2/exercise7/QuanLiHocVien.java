@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+// import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+// import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
+// import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,15 +20,17 @@ import java.util.List;
 public class QuanLiHocVien {
     private static List<HocVien> list = new ArrayList<>();
 
-    public void nhapDanhSachHocVienTuFile(String fileName) throws IOException, ParseException {
+    public void addHocVienTuFile(String fileName) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String hoTen, queQuan, ngaySinh;
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        String hoTen, queQuan, ngaySinh, line;
 
-        while ((hoTen = reader.readLine()) != null) {
-            queQuan = reader.readLine();
-            ngaySinh = reader.readLine();
-            list.add(new HocVien(hoTen, queQuan, f.parse(ngaySinh)));
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            hoTen = parts[0].trim();
+            queQuan = parts[1].trim();
+            ngaySinh = parts[2].trim();
+            System.out.println("Ngày sinh đọc được: " + ngaySinh);
+            list.add(new HocVien(hoTen, queQuan, ngaySinh));
         }
         reader.close();
     }
@@ -43,7 +47,7 @@ public class QuanLiHocVien {
 
     public void hienThiDanhSachHocVien() {
         for (HocVien hv : list) {
-            System.out.println(hv);
+            System.out.println(hv.toString());
         }
     }
 
@@ -56,7 +60,7 @@ public class QuanLiHocVien {
         }
     }
 
-    public void sapXepTheoDiem() {
+    public void sortTheoDiem() {
         Collections.sort(list, new Comparator<HocVien>() {
             @Override
             public int compare(HocVien acc1, HocVien acc2) {
@@ -77,33 +81,26 @@ public class QuanLiHocVien {
     }
 
     public void thongKeDoTuoi() {
+
         int duoi18 = 0, tu18den23 = 0, tren24 = 0;
-        Calendar cal = Calendar.getInstance();
-        int namHienTai = cal.get(Calendar.YEAR);
+
 
         for (HocVien hv : list) {
-            int tuoi = namHienTai - hv.getNgaySinh().getYear() - 1900;
+            LocalDate ngaySinh = hv.getNgaySinh(); 
+            int tuoi = Period.between(ngaySinh, LocalDate.now()).getYears(); 
+
             if (tuoi < 18) duoi18++;
             else if (tuoi <= 23) tu18den23++;
             else tren24++;
         }
 
-        // int duoi18 = 0, tu18den23 = 0, tren24 = 0;
-        // int namHienTai = LocalDate.now().getYear();
-
-
-        // for (HocVien hv : list) {
-        //     LocalDate ngaySinh = hv.getNgaySinh(); // getNgaySinh() trả về LocalDate
-        //     int tuoi = Period.between(ngaySinh, LocalDate.now()).getYears(); // Tính tuổi
-
-        //     if (tuoi < 18) duoi18++;
-        //     else if (tuoi <= 23) tu18den23++;
-        //     else tren24++;
-        // }
-
         System.out.println("Thống kê độ tuổi:");
         System.out.println("Dưới 18: " + duoi18);
         System.out.println("Từ 18 đến 23: " + tu18den23);
         System.out.println("Trên 24: " + tren24);
+    }
+
+    public void addHocVien(HocVien... a){
+        list.addAll(Arrays.asList(a));
     }
 }

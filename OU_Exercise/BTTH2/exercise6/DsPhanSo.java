@@ -31,6 +31,10 @@ public class DsPhanSo {
         System.out.println("Khong tim thay");
     }
 
+    public void removeElementOptimize(PhanSo ps){
+        this.list.removeIf(q -> q.comparePhanSo(ps) == 0);
+    }
+
     public void removeElement(int tuSo, int mauSo){
         for(PhanSo ps : list){
             if(ps.getTuSo() == tuSo && ps.getMauSo() == mauSo){
@@ -41,6 +45,10 @@ public class DsPhanSo {
         System.out.println("Khong tim thay");
     }
 
+    public PhanSo sumAllPhanSoOptimize(){
+        return this.list.stream().reduce(new PhanSo(), (t,x) -> t.add(x));
+    }
+
     public PhanSo sumAllPhanSo(){
         PhanSo sum = new PhanSo();
         for(PhanSo ps : list){
@@ -48,6 +56,10 @@ public class DsPhanSo {
         }
         sum.reduceFraction();
         return sum;
+    }
+
+    public PhanSo findMaxPhanSoOptimize(){
+        return this.list.stream().max((p,q ) -> p.comparePhanSo(q)).get();
     }
 
     public PhanSo findMax(){
