@@ -34,6 +34,7 @@ public class Main {
                     String isTerm = scanner.next();
                     if (isTerm.equalsIgnoreCase("yes")) {
                         System.out.print("Enter term (ONE_WEEK/ONE_MONTH/ONE_YEAR): ");
+                        // valueOf cho phép chuyển đổi một String thành 1 hằng số enum 
                         KyHan term = KyHan.valueOf(scanner.next());
                         manager.addAccount(new TermAccount(name, phone, email, balance, term));
                     } else {
