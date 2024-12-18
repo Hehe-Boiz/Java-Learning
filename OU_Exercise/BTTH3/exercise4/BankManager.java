@@ -25,16 +25,6 @@ public class BankManager {
                 .findFirst().ifPresentOrElse(Account::displayInfo, () -> System.out.println("Account not found."));
     }
 
-    public void searchAccount(String keyword) {
-        for (Account account : accounts) {
-            if (account.getAccountNumber().equals(keyword) || account.getAccountName().contains(keyword)) {
-                account.displayInfo();
-                return;
-            }
-        }
-        System.out.println("Account not found.");
-    }
-
     public void deposit(String accountNumber, double amount) {
         for (Account acc : accounts) {
             if (acc.getAccountNumber().equals(accountNumber)) {
@@ -59,7 +49,9 @@ public class BankManager {
                     String choice = sc.nextLine().toLowerCase();
 
                     if (choice.equals("yes")) {
-                        acc = new NoTermAccount(accountNumber, accountNumber, choice, amount);
+                        accounts.remove(acc);
+                        NoTermAccount newAccount = new NoTermAccount(accountNumber, accountNumber, choice, amount);
+                        accounts.add(newAccount);
                         System.out.println("transfer to demand account");
                     } else {
                         return;
@@ -104,6 +96,7 @@ public class BankManager {
             if (acc instanceof TermAccount && acc.getAccountNumber().equals(accountNumber)) {
                 TermAccount termAccount = (TermAccount) acc;
                 termAccount.updateMaturityDate(newTerm);
+                return;
             }
         }
         System.out.println("Account not found.");

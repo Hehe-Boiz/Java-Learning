@@ -3,14 +3,14 @@ package exercise4;
 import java.time.LocalDate;
 
 abstract public class Account {
-    private static int nextAccountNumber = 1; 
-    private String accountNumber;            
-    private String accountName;             
-    private String phone;                    
-    private String email;                    
-    private double balance;                  
-    private LocalDate createdDate;           
-    private boolean isActive;                
+    private static int nextAccountNumber = 1;
+    private String accountNumber;
+    private String accountName;
+    private String phone;
+    private String email;
+    private double balance;
+    private LocalDate createdDate;
+    private boolean isActive;
 
     public Account(String accountName, String phone, String email, double balance) {
         this.accountNumber = String.format("%06d", nextAccountNumber++);
@@ -34,20 +34,31 @@ abstract public class Account {
         return balance;
     }
 
-    // nạp tiền 
+    public abstract boolean isMaturityDate();
+
+    // nạp tiền
     public void deposit(double amount) {
-        balance += amount;
+        if (this.isMaturityDate() == true) {
+            this.balance += amount;
+        }
     }
 
-    // rút tiền 
+    public abstract double caculatorInterest();
+
+    // rút tiền
     public void withdraw(double amount) {
-        balance -= amount;
+        if (this.balance >= amount && this.isMaturityDate() == true) {
+            this.balance -= amount;
+        }
     }
 
-    // cộng với tiền lãi 
+    // cộng với tiền lãi
     public void addInterest(double rate) {
         balance += balance * rate / 100;
     }
 
-    public abstract void displayInfo();
+    public void displayInfo() {
+        System.out.printf("So tk: %s\nTen tk: %s\nSo tien: %.1f VND\n", this.accountNumber, this.accountName,
+                this.balance);
+    }
 }

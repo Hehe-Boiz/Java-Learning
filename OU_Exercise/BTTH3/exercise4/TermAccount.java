@@ -2,10 +2,6 @@ package exercise4;
 
 import java.time.LocalDate;
 
-enum KyHan {
-    MOT_TUAN, MOT_THANG, MOT_NAM
-}
-
 public class TermAccount extends Account {
     private KyHan term;
     private LocalDate maturityDate;
@@ -13,7 +9,7 @@ public class TermAccount extends Account {
     public TermAccount(String accountName, String phone, String email, double balance, KyHan term) {
         super(accountName, phone, email, balance);
         this.term = term;
-        this.maturityDate = calculateMaturityDate(term);
+        this.maturityDate = term.caculatorTime(LocalDate.now());
     }
 
     // tính toán thời gian hết hạn
@@ -30,11 +26,6 @@ public class TermAccount extends Account {
         }
     }
 
-    // đạt đến kỳ hạn chưa
-    public boolean isMaturityDate() {
-        return LocalDate.now().isEqual(maturityDate);
-    }
-
     public void updateMaturityDate(KyHan newTerm) {
         if (newTerm != null) {
             this.term = newTerm; 
@@ -49,11 +40,17 @@ public class TermAccount extends Account {
 
     @Override
     public void displayInfo() {
-        System.out.println("Account Number: " + getAccountNumber());
-        System.out.println("Account Name: " + getAccountName());
-        System.out.println("Balance: " + getBalance());
-        System.out.println("Account Type: Term Account");
-        System.out.println("Term: " + term);
-        System.out.println("Maturity Date: " + maturityDate);
+        super.displayInfo();
+        System.out.printf("Ky han: %s\nNgay dao han: %s\n",this.term, this.maturityDate.format(Config.FORMATTER));
+    }
+
+    @Override
+    public boolean isMaturityDate(){
+        return this.maturityDate.equals(LocalDate.now());
+    }
+
+    @Override
+    public double caculatorInterest(){
+        return this.term.caculatorInterest(getBalance());
     }
 }

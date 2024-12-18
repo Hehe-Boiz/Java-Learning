@@ -44,7 +44,7 @@ public class Main {
                 case 2 -> {
                     System.out.print("Enter account number or name: ");
                     String keyword = scanner.nextLine();
-                    manager.searchAccount(keyword);
+                    manager.searchAccountStream(keyword);
                 }
                 case 3 -> {
                     System.out.print("Enter account number: ");
