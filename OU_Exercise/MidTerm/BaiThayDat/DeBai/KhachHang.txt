@@ -1,0 +1,24 @@
+// Khach Hang (co 3 thong tin): ho ten, ngay sinh, so du
+// KhachHangVip (co 4 thong tin): ho ten, ngay sinh, so du, ngay het han
+Nguyen Thi Mai, 15/03/1992, 1534268, 10/03/2025
+Tran Minh Tư, 22/08/1985, 8902105
+Pham Thi Lan, 10/12/1990, 12000000
+Le Thi Thu, 01/01/1995, 7854231
+Nguyen Minh Toan, 19/07/1988, 4098725, 01/12/2025 
+Hoang Thi Lan, 05/10/1988, 2105000, 12/12/2024
+Nguyen Thi Hoa, 27/04/1992, 5000000
+Nguyen Thi Kim, 30/06/1985, 1502500
+Vu Minh Tu, 11/11/1993, 3240000, 25/02/2025
+Tran Thi Lan, 14/02/1990, 6700000
+Phan Thi Lan, 17/03/1994, 2600000
+Nguyen Thi Mai, 29/05/1987, 1883000
+Le Minh Thien, 03/04/1982, 20000000
+Hoang Thị Thu, 20/07/1995, 5100000, 10/06/2025
+Nguyen Minh Hoang, 06/09/1999, 1754325, 17/11/2024
+Tran Thi Lan, 02/03/1984, 9500000
+Phan Minh Bao, 04/08/1986, 7100000, 04/06/2025
+Vu Minh Thu, 25/12/1991, 1900000
+Nguyen Minh Tuan, 13/01/1994, 1342000
+Nguyen Thi Linh, 09/05/1987, 7605000
+Hoang Minh Phat, 17/06/1983, 2050000, 15/10/2025
+Le Thi Lan, 28/07/1992, 13000000
