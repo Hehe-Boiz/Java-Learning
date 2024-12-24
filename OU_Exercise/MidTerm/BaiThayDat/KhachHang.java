@@ -10,6 +10,7 @@ public class KhachHang {
     protected double balance;
 
     public KhachHang(String name, String sinh, double balance) {
+        if (dem == 10000) throw new Error("So luong vuot qua kha nang");
         this.id = String.format("KH-%04d", ++dem);
         this.name = name;
         this.sinh = LocalDate.parse(sinh, Config.FORMATTER);

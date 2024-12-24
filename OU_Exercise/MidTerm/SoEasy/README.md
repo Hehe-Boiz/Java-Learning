@@ -91,18 +91,3 @@ Hệ thống quản lý sinh viên và môn học giúp theo dõi việc đăng 
 3. Kiểm tra số tín chỉ đăng ký (tối thiểu 12 tín chỉ)
 4. Hiển thị môn học chưa đủ sinh viên đăng ký
 
-## Yêu Cầu Hệ Thống
-- Ngôn ngữ lập trình: [Chọn ngôn ngữ phù hợp]
-- Cơ sở dữ liệu: [Chọn CSDL phù hợp]
-
-## Hướng Dẫn Cài Đặt
-1. Clone repository
-2. Cài đặt các dependencies
-3. Cấu hình cơ sở dữ liệu
-4. Chạy chương trình
-
-## Tác Giả
-[Thêm thông tin tác giả]
-
-## Giấy Phép
-[Thêm thông tin giấy phép]
