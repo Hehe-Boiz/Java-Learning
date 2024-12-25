@@ -62,11 +62,6 @@ Hệ thống quản lý thẻ thư viện bằng Java dành cho thư viện trư
 - Nếu cùng năm sinh thì sắp xếp tăng dần theo tên
 - Hiển thị danh sách đã sắp xếp
 
-### 7. Quản Lý Sinh Nhật Tháng 12
-- Thêm người học mới
-- Xuất danh sách người có sinh nhật tháng 12
-- Sắp xếp theo ngày sinh trong tháng
-
 ## Yêu Cầu Kỹ Thuật
 
 ### 1. Lập Trình Hướng Đối Tượng (OOP)
@@ -93,25 +88,6 @@ Hệ thống quản lý thẻ thư viện bằng Java dành cho thư viện trư
 - Định dạng ngày: dd/MM/yyyy
 - Định dạng tiền tệ
 
-## Cấu Trúc Thư Mục
-
-```
-Easy
-├── models
-│   ├── Student (Người học)
-│   ├── Card (Thẻ)
-│   │   ├── SemesterCard (Thẻ học kỳ)
-│   │   └── YearCard (Thẻ năm học)
-│   └── Department (Lớp/Khoa)
-├── services
-│   ├── CardService (Dịch vụ quản lý thẻ)
-│   ├── StudentService (Dịch vụ quản lý người học)
-│   └── ValidationService (Dịch vụ kiểm tra dữ liệu)
-└── utils
-    ├── DateFormatter (Định dạng ngày)
-    └── CurrencyFormatter (Định dạng tiền)
-```
-
 ## Quy Tắc Kiểm Tra Dữ Liệu
 
 1. Định dạng mã người học: Phải theo mẫu LIB-XXXXX
@@ -126,11 +102,3 @@ Hệ thống xử lý các trường hợp lỗi sau:
 - Thiếu thông tin bắt buộc
 - Lỗi kiểm tra ngày tháng
 - Tìm kiếm với mã không tồn tại
-
-## Phát Triển Tương Lai
-
-1. Tích hợp cơ sở dữ liệu
-2. Phát triển giao diện người dùng
-3. Tạo báo cáo thống kê
-4. Phát triển API
-5. Hỗ trợ đa ngôn ngữ

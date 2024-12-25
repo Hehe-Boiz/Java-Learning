@@ -1,8 +1,6 @@
 package OU_Exercise.MidTerm.Easy;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Learner {
     private static int count =0;
@@ -10,58 +8,51 @@ public class Learner {
     private String name;
     private LocalDate date;
     private String department;
-    private List<LibaryCard> list;
 
-    public Learner(String name, LocalDate date, String department) {
+    public Learner(String name, LocalDate birthDate, String department) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên không được để trống");
+        }
+        if (birthDate == null) {
+            throw new IllegalArgumentException("Ngày sinh không được để trống");
+        }
+        if (department == null || department.trim().isEmpty()) {
+            throw new IllegalArgumentException("Khoa/Viện không được để trống");
+        }
+        
         this.id = String.format("HVSV-%05d", ++count);
         this.name = name;
-        this.date = date;
+        this.date = birthDate;
         this.department = department;
-        this.list = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
+    // Getters và setters
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public LocalDate getBirthDate() { return date; }
+    public String getDepartment() { return department; }
 
     public void setName(String name) {
-        this.name = name;
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        }
     }
-
-    public LocalDate getDate() {
-        return date;
+    
+    public void setBirthDate(LocalDate birthDate) {
+        if (birthDate != null) {
+            this.date = birthDate;
+        }
     }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
+    
     public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public List<LibaryCard> getList() {
-        return list;
-    }
-
-    public void setList(List<LibaryCard> list) {
-        this.list = list;
-    }
-
-    public boolean isCheckYear2024(){
-        return this.list.stream().anyMatch(l -> l.isCheckYear2024());
+        if (department != null && !department.trim().isEmpty()) {
+            this.department = department;
+        }
     }
 
     @Override
     public String toString() {
-        return "Learner: id: " + id + ", Họ tên: " + name + ", Ngày sinh: " + date + ", Khoa/Viện: " + department ;
+        return String.format("Người học: ID: %s, Họ tên: %s, Ngày sinh: %s, Khoa/Viện: %s",
+                id, name, date, department);
     }   
 }
