@@ -5,7 +5,8 @@ public class Deluxe extends Room{
     private int bed;
     private boolean balcony;
     
-    public Deluxe(double area, int bed, boolean balcony) {
+    public Deluxe(double area, int bed, boolean balcony,String idHotel) {
+        super(idHotel);
         this.area = area;
         this.bed = bed;
         this.balcony = balcony;
@@ -35,12 +36,14 @@ public class Deluxe extends Room{
         this.balcony = balcony;
     }
 
-    public double price(int dem){
-        return 1200000*dem+200000*bed+(balcony ? 300000 : 0);
-    }
 
     public double getPrice(){
         return 1200000;
+    }
+
+    @Override
+    protected double getAdditionalCost() {
+        return 200000 * bed + (balcony ? 300000 : 0); 
     }
 
     @Override

@@ -4,7 +4,8 @@ public class Standard extends Room{
     private double area;
     private int bed;
     
-    public Standard(double area, int bed) {
+    public Standard(double area, int bed, String idHotel) {
+        super(idHotel);
         this.area = area;
         this.bed = bed;
     }
@@ -25,8 +26,9 @@ public class Standard extends Room{
         this.bed = bed;
     }
 
-    public double price(int dem){
-        return 500000*dem+100000*bed;
+    @Override
+    protected double getAdditionalCost() {
+        return 100000 *bed ; 
     }
 
     public double getPrice(){

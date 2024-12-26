@@ -38,6 +38,4 @@ public class Foreigner extends Customer{
     public void setVisaExpirationDate(LocalDate visaExpirationDate) {
         this.visaExpirationDate = visaExpirationDate;
     }
-
-    
 }

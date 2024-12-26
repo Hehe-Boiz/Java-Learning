@@ -1,9 +1,10 @@
 package OU_Exercise.MidTerm.EasyMedium;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Customer {
-    private static int count =0;
+    private static int count = 0;
     protected String id;
     protected String fullname;
     protected String email;
@@ -54,7 +55,7 @@ public class Customer {
         this.brithDate = brithDate;
     }
 
-    public boolean isOver18YearsOld(){
-        return LocalDate.now().getYear() - brithDate.getYear() > 18;
+    public boolean isOver18YearsOld() {
+        return ChronoUnit.YEARS.between(brithDate, LocalDate.now()) >= 18;
     }
 }

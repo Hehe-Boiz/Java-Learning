@@ -16,7 +16,4 @@ public class Vietnamese extends Customer{
     public void setCCCD(String cCCD) {
         CCCD = cCCD;
     }
-    
-    
-    
 }

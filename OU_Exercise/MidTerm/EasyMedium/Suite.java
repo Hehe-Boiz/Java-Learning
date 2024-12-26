@@ -1,11 +1,12 @@
 package OU_Exercise.MidTerm.EasyMedium;
 
-public class Suite extends Room{
+public class Suite extends Room {
     private double area;
     private int bedroom;
     private boolean kitchen;
-    
-    public Suite(double area, int bedroom, boolean kitchen) {
+
+    public Suite(double area, int bedroom, boolean kitchen,String idHotel) {
+        super(idHotel);
         this.area = area;
         this.bedroom = bedroom;
         this.kitchen = kitchen;
@@ -35,18 +36,18 @@ public class Suite extends Room{
         this.kitchen = kitchen;
     }
 
-    public double price(int dem){
-        return 2000000*dem+500000*bedroom+(kitchen ? 500000 : 0);
-    }
-
-    public double getPrice(){
+    public double getPrice() {
         return 2000000;
     }
 
     @Override
-    public String toString() {
-        return "Suite " +super.toString()+" diện tích: " + area + ", số phòng ngủ: " + bedroom + " phòng bếp: "+ kitchen;
+    protected double getAdditionalCost() {
+        return 500000 * bedroom + (kitchen ? 500000 : 0); 
     }
 
-    
+    @Override
+    public String toString() {
+        return "Suite " + super.toString() + " diện tích: " + area + ", số phòng ngủ: " + bedroom + " phòng bếp: "
+                + kitchen;
+    }
 }

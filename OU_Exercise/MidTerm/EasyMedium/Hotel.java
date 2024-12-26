@@ -16,6 +16,9 @@ public class Hotel {
         this.id = String.format("HOTEL-%05d", ++count);
         this.name = name;
         this.address = address;
+        if(star < 3 || star >5){
+            throw new IllegalAccessError("Số sao không phù hợp");
+        }
         this.star = star;
         this.year = year;
         this.list = new ArrayList<>();
@@ -69,7 +72,5 @@ public class Hotel {
     public String toString() {
         return "Hotel [id=" + id + ", name=" + name + ", address=" + address + ", star=" + star + ", year=" + year
                 + ", list=" + list + "]";
-    }
-
-    
+    } 
 }
