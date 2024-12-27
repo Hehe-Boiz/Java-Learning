@@ -10,7 +10,11 @@
      - Họ tên.
      - Ngày sinh.
      - Trường.
-2. **Loại vé:**
+2. **Loại vé:**:
+   - **Thông tin cơ bản:**
+     - Mã vé
+     - Ngày mua vé
+     - Ngày hết hạn
    - **Vé tháng:**
      - 70k/vé nếu mua trước ngày 15.
      - 35k/vé nếu mua sau ngày 15.
@@ -20,7 +24,7 @@
 
 ### Chức năng
 1. **Sinh viên mua vé.**
-2. **In danh sách người học sinh trong tháng 12.**
+2. **In danh sách người học sinh có tháng sinh trong tháng 12.**
 3. **Hiển thị danh sách vé của một người học bằng mã số.**
 4. **Tìm kiếm người học theo mã số.**
 5. **In danh sách người học mua vé trong năm 2024.**
