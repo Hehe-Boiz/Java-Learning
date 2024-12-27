@@ -16,8 +16,8 @@ public class Hotel {
         this.id = String.format("HOTEL-%05d", ++count);
         this.name = name;
         this.address = address;
-        if(star < 3 || star >5){
-            throw new IllegalAccessError("Số sao không phù hợp");
+        if(star < Config.MIN_HOTEL_STARS || star >Config.MAX_HOTEL_STARS){
+            throw new BookingException("Xếp hạng khách sạn phải từ 3-5 sao");
         }
         this.star = star;
         this.year = year;

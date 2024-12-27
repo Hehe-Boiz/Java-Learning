@@ -30,6 +30,4 @@ public class RangeTime {
     public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
-
-    
 }

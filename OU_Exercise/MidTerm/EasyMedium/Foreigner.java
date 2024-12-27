@@ -38,4 +38,8 @@ public class Foreigner extends Customer{
     public void setVisaExpirationDate(LocalDate visaExpirationDate) {
         this.visaExpirationDate = visaExpirationDate;
     }
+
+    public boolean hasValidVisa(){
+        return LocalDate.now().isBefore(visaExpirationDate);
+    }
 }

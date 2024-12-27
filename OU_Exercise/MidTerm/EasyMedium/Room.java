@@ -33,6 +33,4 @@ public abstract class Room {
     public void setIdHotel(String idHotel) {
         this.idHotel = idHotel;
     }
-
-    
 }

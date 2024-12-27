@@ -1,7 +1,6 @@
 package OU_Exercise.MidTerm.EasyMedium;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,7 +20,7 @@ public class BookingService {
 
         Hotel hotel = hotels.stream().filter(h -> h.getId().equals(idHotels)).findFirst().orElse(null);
         if (hotel == null) {
-            throw new IllegalAccessError("Không tìm thấy khách sạn cần hiện");
+            throw new HotelNotFoundException("Không tìm thấy khách sạn cần hiện");
         }
 
         hotel.getList().stream().filter(r -> c.isInstance(r))
@@ -50,7 +49,7 @@ public class BookingService {
         List<Booking> booking = bookings.stream().filter(b -> b.getCustomer().getId().equals(msCustomer))
                 .collect(Collectors.toList());
         if (booking == null) {
-            throw new IllegalAccessError("Khách hàng này chưa đặt lần nào");
+            throw new HotelNotFoundException("Khách hàng này chưa đặt lần nào");
         }
 
         booking.forEach(b -> System.out.println(b));
@@ -105,5 +104,4 @@ public class BookingService {
         this.booksRoom = booksRoom;
     }
 
-    
 }

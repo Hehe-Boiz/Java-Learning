@@ -13,6 +13,7 @@ public class Booking {
     private String idHotel;
     private Customer customer;
     private List<Room> rooms;
+    private double totalAmount;
 
     public Booking(String checkIn, String checkOut, String state, Customer customer, List<Room> rooms, String idHotel) {
         if(!isCheckEnum(state)){
@@ -21,6 +22,7 @@ public class Booking {
         if (customer == null || rooms == null || rooms.isEmpty()) {
             throw new IllegalArgumentException("Khách hàng và danh sách phòng không được để trống");
         }
+        validateBooking(customer, rooms, LocalDate.parse(checkIn, Config.FORMATTER), LocalDate.parse(checkOut, Config.FORMATTER));
         this.id = String.format("BOOK-%05d", ++count);
         this.checkIn = LocalDate.parse(checkIn, Config.FORMATTER);
         this.checkOut = LocalDate.parse(checkOut, Config.FORMATTER);
@@ -31,6 +33,7 @@ public class Booking {
         this.customer = customer;
         this.rooms = rooms;
         this.idHotel= idHotel;
+        calculateTotalAmount();
     }
     
     private boolean isCheckEnum(String check) {
@@ -112,4 +115,43 @@ public class Booking {
         return "Booking [id=" + id + ", checkIn=" + checkIn + ", checkOut=" + checkOut + ", state=" + state
                 + ", idHotel=" + idHotel + ", customer=" + customer + ", rooms=" + rooms + "]";
     }
+
+    private void validateBooking(Customer customer, List<Room> rooms, 
+                               LocalDate checkInDate, LocalDate checkOutDate) {
+        if (!customer.isOver18YearsOld()) {
+            throw new CustomerValidationException("Khách hàng phải trên 18 tuổi");
+        }
+
+        if (customer instanceof Foreigner ic && !ic.hasValidVisa()) {
+            throw new CustomerValidationException("Visa của khách quốc tế đã hết hạn");
+        }
+
+        long days = checkInDate.until(checkOutDate).getDays();
+        if (days < Config.MIN_BOOKING_DAYS || days > Config.MAX_BOOKING_DAYS) {
+            throw new InvalidDateRangeException(
+                "Thời gian đặt phòng phải từ 1 đến 30 ngày");
+        }
+
+        if (LocalDate.now().plusDays(Config.MIN_ADVANCE_BOOKING_DAYS).isAfter(checkInDate)) {
+            throw new InvalidDateRangeException(
+                "Phải đặt phòng trước ít nhất 1 ngày");
+        }
+    }
+
+    private void calculateTotalAmount() {
+        long days = checkIn.until(checkOut).getDays();
+        this.totalAmount = rooms.stream()
+                               .mapToDouble(r -> r.price((int)ChronoUnit.DAYS.between(checkIn, checkOut)))
+                               .sum() * days;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    
 }
