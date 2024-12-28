@@ -1,6 +1,7 @@
-package OU_Exercise.MidTerm.BaiTruoc;
+package OU_Exercise.MidTerm.BaiTruoc.TrainTicket;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public abstract class Ticket {
     private static int count = 0;
@@ -42,4 +43,5 @@ public abstract class Ticket {
     }
     
     public abstract LocalDate plusDay();
+
 }

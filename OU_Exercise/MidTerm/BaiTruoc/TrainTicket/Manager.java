@@ -1,4 +1,4 @@
-package OU_Exercise.MidTerm.BaiTruoc;
+package OU_Exercise.MidTerm.BaiTruoc.TrainTicket;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package OU_Exercise.MidTerm.BaiTruoc;
+package OU_Exercise.MidTerm.BaiTruoc.TrainTicket;
 
 public class Tester {
 
